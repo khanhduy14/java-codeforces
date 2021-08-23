@@ -12,9 +12,10 @@ public class P2A {
     long n = scanner.nextLong();
     long i = 0;
     Map<String, Long> map = new HashMap<>();
+    Map<String, Long> map1 = new HashMap<>();
     String winner = "";
-    LinkedList<String> linkedList = new LinkedList<>();
-    long second = 0;
+    LinkedList<String> nameList = new LinkedList<>();
+    LinkedList<Long> scoreList = new LinkedList<>();
     long maxScore = 0;
     while (i < n) {
       String name = scanner.next();
@@ -22,28 +23,31 @@ public class P2A {
 
       if (map.get(name) == null) {
         map.put(name, score);
-        if (score > maxScore) {
-          second = maxScore;
-          maxScore = score;
-          winner = name;
-          linkedList.add(name);
-        }
       } else {
         long currScore = map.get(name) + score;
         map.put(name, currScore);
-        if (score < 0 && winner.equals(name)) {
-          if (currScore < second)
-        }
-        if (currScore > maxScore) {
-          second = maxScore;
-          maxScore = currScore;
-          winner = name;
-          linkedList.add(name);
-        }
       }
+      nameList.add(name);
+      scoreList.add(score);
       ++i;
     }
-    out.println(winner);
+    for (String key : map.keySet()) {
+      maxScore = Math.max(maxScore, map.get(key));
+    }
+
+    for (int j = 0; j < n; j++) {
+      if (map1.get(nameList.get(j)) == null) {
+        map1.put(nameList.get(j), scoreList.get(j));
+      } else {
+        long score = map1.get(nameList.get(j)) + scoreList.get(j);
+        map1.put(nameList.get(j), score);
+      }
+
+      if (map1.get(nameList.get(j)) >= maxScore && map.get(nameList.get(j)) == maxScore) {
+        out.println(nameList.get(j));
+        break;
+      }
+    }
     out.close();
   }
 }
