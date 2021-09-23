@@ -1,5 +1,6 @@
 package com.duykk.code.forces.contests.c743;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class B {
@@ -11,41 +12,38 @@ public class B {
     for (int i = 0; i < t; i++) {
       int n = scanner.nextInt();
 
+      int[] posa = new int[n*2 + 1];
+      Arrays.fill(posa, n - 1);
+      int[] posb = new int[n*2 + 1];
+      Arrays.fill(posb, n - 1);
       int[] a = new int[n];
       int[] b = new int[n];
 
 
       for (int j = 0; j < n; j++) {
-        a[j] = scanner.nextInt();
+        int temp = scanner.nextInt();
+        a[j] = temp;
+        posa[temp] = j;
       }
 
       for (int j = 0; j < n; j++) {
-        b[j] = scanner.nextInt();
+        int temp = scanner.nextInt();
+        b[j] = temp;
+        posb[temp] = j;
       }
 
-      int minA = a[0];
-      int maxB = b[0];
-
-      int result = 0;
-
-      for (int j = 0; j < n; j++) {
-
-        int tempA = Math.min(minA, a[j]);
-        int tempB = Math.max(maxB, b[j]);
-        if (tempA != minA) {
-          result ++;
-          minA = tempA;
-        }
-        if (tempB != maxB) {
-          result ++;
-          maxB = tempB;
+      if (a[0] < b[0]) System.out.println(0);
+      else {
+        for (int j = 2*n - 1; j >= 0 ; --j) {
+          posb[j] = Math.min(posb[j], posb[j+1]);
         }
 
-
-        if (minA < maxB) {
-          System.out.println(result);
-          break;
+        int result = n - 1;
+        for (int j = 1; j < 2*n; j += 2) {
+          result = Math.min(result, posa[j] + posb[j]);
         }
+
+        System.out.println(result);
       }
     }
   }
